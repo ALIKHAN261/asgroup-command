@@ -98,6 +98,19 @@ def queue_approval(agent, title, detail, kind="action"):
             (time.time(), agent, title, detail, kind))
         return cur.lastrowid
 
+def queue_approval_once(agent, title, detail, kind="action"):
+    with _lock, _db:
+        row = _db.execute(
+            "SELECT id FROM approvals WHERE agent=? AND title=? AND detail=? "
+            "AND kind=? AND status='pending' ORDER BY id DESC LIMIT 1",
+            (agent, title, detail, kind)).fetchone()
+        if row:
+            return row["id"], False
+        cur = _db.execute(
+            "INSERT INTO approvals(ts,agent,title,detail,kind) VALUES(?,?,?,?,?)",
+            (time.time(), agent, title, detail, kind))
+        return cur.lastrowid, True
+
 def get_approvals(status="pending"):
     with _lock:
         return [dict(r) for r in _db.execute(

@@ -15,9 +15,10 @@ class Ctx:
         store.log(self.agent_name, kind, message)
 
     def queue_approval(self, title, detail):
-        aid = store.queue_approval(self.agent_name, title, detail)
-        store.log(self.agent_name, "approval",
-                  f"queued for your review: {title} (#{aid})")
+        aid, created = store.queue_approval_once(self.agent_name, title, detail)
+        message = (f"queued for your review: {title} (#{aid})" if created
+                   else f"already waiting for review: {title} (#{aid})")
+        store.log(self.agent_name, "approval", message)
         return aid
 
     def request_control(self, action, params, reason):

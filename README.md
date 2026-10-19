@@ -202,6 +202,9 @@ its recent activity and pause or resume it. Pause state is stored in SQLite;
 the scheduler skips paused agents, and a run already in progress may finish.
 Use the agent detail view's **Run now** button to request an immediate run;
 paused agents must be resumed before they can run.
+If an agent repeats the same approval while it is still pending, the existing
+item is reused instead of adding a duplicate. Once you decide it, later runs
+may queue a fresh item.
 
 The authenticated `POST /api/agents/{name}/pause` endpoint accepts
 `{"paused":true}` to pause and `{"paused":false}` to resume. Agent activity

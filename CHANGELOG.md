@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Deduplicated identical pending approvals from the same agent to keep repeat runs from flooding the review queue.
 - Added `content_studio` to prepare reviewable briefs from local topic lists.
 - Added `invoice_watch` to draft overdue invoice follow-ups from a local CSV.
 - Added authenticated `POST /api/agents/{name}/run` and an agent-detail Run now button.
