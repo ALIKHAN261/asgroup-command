@@ -113,6 +113,11 @@ Open http://127.0.0.1:8000/docs to see the API. Leave this running.
   `http://<your-PC-tailscale-IP>:8000` in the dashboard's ⚙ settings.
   Your traffic stays inside your private tailnet — nothing public.
 
+The dashboard supports a saved dark/light theme and can be installed as a
+Progressive Web App from a supported mobile or desktop browser. It caches the
+static interface for offline loading; backend data and live screen access still
+require a connection to your PC.
+
 ## Add a new agent (one file, one job)
 
 `backend/agents/myjob.py`:

@@ -21,3 +21,7 @@ const io = new IntersectionObserver((entries) => {
   }
 });
 document.querySelectorAll("[data-count]").forEach((el) => io.observe(el));
+
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js").catch(() => {}));
+}

@@ -1,4 +1,14 @@
 const $ = (id) => document.getElementById(id);
+const applyTheme = (theme) => {
+  document.documentElement.dataset.theme = theme;
+  const light = theme === "light";
+  $("themeBtn").textContent = light ? "☾" : "☼";
+  $("themeBtn").title = light ? "Switch to dark theme" : "Switch to light theme";
+  $("themeBtn").setAttribute("aria-label", $("themeBtn").title);
+  document.querySelector('meta[name="theme-color"]').content = light ? "#edf3f5" : "#070b10";
+};
+const savedTheme = localStorage.getItem("asg_theme");
+applyTheme(savedTheme === "light" ? "light" : "dark");
 const store = {
   get baseUrl() { return localStorage.getItem("asg_base") || "http://127.0.0.1:8000"; },
   get token() { return localStorage.getItem("asg_token") || ""; },
@@ -324,6 +334,11 @@ document.querySelectorAll(".tab").forEach((tab) => tab.addEventListener("click",
 
 $("refreshBtn").addEventListener("click", tick);
 $("syncBtn").addEventListener("click", tick);
+$("themeBtn").addEventListener("click", () => {
+  const theme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+  localStorage.setItem("asg_theme", theme);
+  applyTheme(theme);
+});
 $("screenBtn").addEventListener("click", () => liveOn ? stopLiveScreen() : startLiveScreen());
 $("settingsBtn").addEventListener("click", () => $("settings").classList.toggle("hidden"));
 $("closeSettings").addEventListener("click", () => $("settings").classList.add("hidden"));
@@ -360,3 +375,6 @@ window.setInterval(updateClock, 30000);
 tick();
 window.setInterval(tick, 3000);
 startLiveScreen();
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js").catch(() => {}));
+}

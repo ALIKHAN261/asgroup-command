@@ -1,0 +1,19 @@
+{
+  "name": "AS GROUP Command",
+  "short_name": "AS Command",
+  "description": "AS GROUP Command operations dashboard",
+  "start_url": "./dashboard.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#070b10",
+  "theme_color": "#070b10",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

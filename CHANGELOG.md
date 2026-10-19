@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Added a persistent dark/light theme toggle to the dashboard.
+- Added a PWA manifest, app icon, and service-worker caching for offline shell loading.
 - Added agent detail views with recent activity and pause/resume controls;
   pause state persists in SQLite and the orchestrator skips paused agents.
 - Added a weekly `reporter` agent that writes an activity, approval, and income
@@ -47,3 +49,4 @@
 - 4 starter agents: tube_watch, scout (draft-only), cash_track, sys_watch
 - Approval queue API (agents can never self-approve)
 - Frontend: live workspace dashboard (agent cards, activity feed, approvals)
+
