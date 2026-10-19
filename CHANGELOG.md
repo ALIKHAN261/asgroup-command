@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added per-agent execution history with duration, status, and summary in SQLite and the dashboard.
 - Added `expense_track` to compare local expense logs with recorded income.
 - Added agent search and status filters, including the compact phone layout.
 - Deduplicated identical pending approvals from the same agent to keep repeat runs from flooding the review queue.

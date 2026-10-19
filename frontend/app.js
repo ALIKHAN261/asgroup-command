@@ -95,6 +95,23 @@ function updateAgentDetail(agent) {
   $("agentPauseBtn").dataset.paused = String(agent.status === "paused");
 }
 
+function runDuration(startedAt, finishedAt) {
+  if (!finishedAt) return "in progress";
+  const seconds = Math.max(0, Math.round(finishedAt - startedAt));
+  if (seconds < 60) return `${seconds}s`;
+  return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+}
+
+async function refreshAgentRuns(agentName) {
+  const runs = await api(`/api/agents/${encodeURIComponent(agentName)}/runs?limit=12`);
+  if (selectedAgent?.name !== agentName) return;
+  $("agentRunHistory").innerHTML = runs.length ? runs.map((run) => `
+    <article class="run-line">
+      <div class="run-meta"><span class="run-status ${esc(run.status)}">${esc(run.status)}</span><time>${dateTime(run.started_at)}</time><span>${runDuration(run.started_at, run.finished_at)}</span></div>
+      <p>${esc(run.summary || (run.status === "working" ? "Agent is running…" : "No run summary."))}</p>
+    </article>`).join("") : `<div class="empty-small">No runs recorded yet.</div>`;
+}
+
 async function openAgentDetail(agent, focusTarget = null) {
   selectedAgent = agent;
   previousAgentFocus = focusTarget;
@@ -102,11 +119,14 @@ async function openAgentDetail(agent, focusTarget = null) {
   $("agentModal").classList.remove("hidden");
   $("agentModal").setAttribute("aria-hidden", "false");
   $("agentDetailActivity").innerHTML = `<div class="empty-small">Loading recent activity…</div>`;
+  $("agentRunHistory").innerHTML = `<div class="empty-small">Loading run history…</div>`;
   $("agentDetailError").classList.add("hidden");
   $("agentPauseBtn").focus();
   try {
     const query = new URLSearchParams({ limit: "30", agent: agent.name });
-    const activity = await api("/api/activity?" + query.toString());
+    const [activity] = await Promise.all([
+      api("/api/activity?" + query.toString()), refreshAgentRuns(agent.name)
+    ]);
     if (selectedAgent?.name === agent.name) renderFeed(activity, "agentDetailActivity");
   } catch (error) {
     $("agentDetailActivity").innerHTML = `<div class="empty-small">Could not load activity.</div>`;
@@ -160,6 +180,7 @@ async function runAgentNow() {
     await api(`/api/agents/${encodeURIComponent(selectedAgent.name)}/run`, { method: "POST" });
     button.textContent = "Run queued";
     await tick();
+    window.setTimeout(() => refreshAgentRuns(agentName).catch(showAgentDetailError), 1200);
   } catch (error) {
     showAgentDetailError(error.message);
     button.textContent = previousText;

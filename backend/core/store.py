@@ -23,6 +23,10 @@ def init(db_path):
             decided_at REAL);
         CREATE TABLE IF NOT EXISTS run_requests(
             agent TEXT PRIMARY KEY, ts REAL);
+        CREATE TABLE IF NOT EXISTS agent_runs(
+            id INTEGER PRIMARY KEY AUTOINCREMENT, agent TEXT NOT NULL,
+            started_at REAL NOT NULL, finished_at REAL, status TEXT NOT NULL,
+            summary TEXT NOT NULL DEFAULT '');
         """)
     # Migration: approvals.kind (default 'action'; 'control' for PC control)
     try:
@@ -74,6 +78,28 @@ def log(agent, kind, message):
                     (time.time(), agent, kind, message))
         _db.execute("DELETE FROM activity WHERE id NOT IN"
                     " (SELECT id FROM activity ORDER BY id DESC LIMIT 500)")
+
+def start_agent_run(agent):
+    with _lock, _db:
+        cur = _db.execute(
+            "INSERT INTO agent_runs(agent,started_at,status) VALUES(?,?,?)",
+            (agent, time.time(), "working"))
+        _db.execute("DELETE FROM agent_runs WHERE id NOT IN"
+                    " (SELECT id FROM agent_runs ORDER BY id DESC LIMIT 2000)")
+        return cur.lastrowid
+
+def finish_agent_run(run_id, status, summary):
+    with _lock, _db:
+        _db.execute(
+            "UPDATE agent_runs SET finished_at=?,status=?,summary=? WHERE id=?",
+            (time.time(), status, summary, run_id))
+
+def get_agent_runs(agent, limit=20):
+    with _lock:
+        return [dict(row) for row in _db.execute(
+            "SELECT id,agent,started_at,finished_at,status,summary "
+            "FROM agent_runs WHERE agent=? ORDER BY id DESC LIMIT ?",
+            (agent, limit))]
 
 def get_activity(limit=80, agent=None):
     with _lock:

@@ -69,6 +69,21 @@ def _seconds_until(time_text):
     return (target - now).total_seconds()
 
 
+def _run_agent(name, spec, ctx):
+    run_id = store.start_agent_run(name)
+    store.set_agent(name, "working", "running…")
+    try:
+        summary = str(spec["fn"](ctx) or "done")[:200]
+        store.set_agent(name, "idle", summary)
+        store.log(name, "ok", f"run finished: {summary}")
+        store.finish_agent_run(run_id, "ok", summary)
+    except Exception as error:
+        summary = f"{type(error).__name__}: {error}"[:500]
+        store.set_agent(name, "error", summary[:200])
+        store.log(name, "error", f"crashed: {error}\n{traceback.format_exc()[-500:]}")
+        store.finish_agent_run(run_id, "error", summary)
+
+
 def _loop(name, spec, config, stop):
     ctx = Ctx(name, config)
     first_run_at = spec.get("first_run_at")
@@ -96,14 +111,7 @@ def _loop(name, spec, config, stop):
             store.pop_run_request(name)
             time.sleep(1)
             continue
-        try:
-            store.set_agent(name, "working", "running…")
-            summary = spec["fn"](ctx) or "done"
-            store.set_agent(name, "idle", str(summary)[:200])
-            store.log(name, "ok", f"run finished: {str(summary)[:200]}")
-        except Exception as e:
-            store.set_agent(name, "error", f"{type(e).__name__}: {e}"[:200])
-            store.log(name, "error", f"crashed: {e}\n{traceback.format_exc()[-500:]}")
+        _run_agent(name, spec, ctx)
         # Sleep in small chunks so shutdown is fast and "run now"
         # requests (voice/dashboard) are picked up within ~2 seconds.
         for _ in range(int(spec["interval"])):

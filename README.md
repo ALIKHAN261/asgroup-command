@@ -214,6 +214,9 @@ Use the agent detail view's **Run now** button to request an immediate run;
 paused agents must be resumed before they can run.
 Use the agent search and status filter to narrow the roster without changing
 the underlying agent state.
+The agent detail view also lists recent executions with start time, duration,
+result, and summary. The authenticated `GET /api/agents/{name}/runs` endpoint
+returns up to 100 records; SQLite retains the newest 2,000 executions total.
 If an agent repeats the same approval while it is still pending, the existing
 item is reused instead of adding a duplicate. Once you decide it, later runs
 may queue a fresh item.

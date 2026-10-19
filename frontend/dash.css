@@ -131,6 +131,12 @@ h2,h3,p{margin:0}
 .detail-activity-heading{display:flex;align-items:baseline;justify-content:space-between;margin:16px 0 6px}.detail-activity-heading h3{font:600 11px "Space Grotesk",sans-serif}.detail-activity-heading span{font-size:8px;color:#65757e}
 .detail-activity{min-height:80px;overflow:auto;border-top:1px solid #1b2930;border-bottom:1px solid #1b2930;padding:0 4px;scrollbar-width:thin;scrollbar-color:#283a42 transparent}
 .detail-activity .activity-line{grid-template-columns:78px minmax(0,1fr)}
+.run-history{max-height:180px;overflow:auto;border-top:1px solid #1b2930;padding:0 4px;scrollbar-width:thin;scrollbar-color:#283a42 transparent}
+.run-line{padding:7px 0;border-bottom:1px solid #1b2930}.run-line:last-child{border-bottom:0}
+.run-meta{display:flex;align-items:center;gap:8px;font-size:8px;color:#71828b}.run-meta time{margin-left:auto}
+.run-status{text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--green)}.run-status.error{color:var(--red)}.run-status.working{color:var(--cyan)}
+.run-line p{font-size:9px;line-height:1.45;color:#98a9b0;margin-top:4px;overflow-wrap:anywhere}
+.run-history-heading{margin-top:12px}
 .pause-note{font-size:8px;color:#73838b;line-height:1.5;margin:10px 0}
 .detail-error{padding:8px;margin-bottom:8px;border:1px solid #683940;border-radius:7px;background:#211216;color:#f0a1a4;font-size:9px}
 .agent-actions{display:flex;align-self:flex-end;gap:8px;margin-top:2px}.agent-actions button{min-width:105px}
@@ -181,6 +187,9 @@ h2,h3,p{margin:0}
 :root[data-theme="light"] .detail-summary{background:#f5f9fa}
 :root[data-theme="light"] .detail-status #agentDetailLastRun,:root[data-theme="light"] .detail-activity-heading span{color:#60747c}
 :root[data-theme="light"] .detail-activity{scrollbar-color:#bdcbd0 transparent}
+:root[data-theme="light"] .run-history{border-color:#dce5e8;scrollbar-color:#bdcbd0 transparent}
+:root[data-theme="light"] .run-line{border-color:#dce5e8}
+:root[data-theme="light"] .run-meta,:root[data-theme="light"] .run-line p{color:#526870}
 :root[data-theme="light"] .detail-error{background:#fff1f1;border-color:#edc5c7;color:#a1333b}
 :root[data-theme="light"] .agent-tools input,:root[data-theme="light"] .agent-tools select{background:#fff;border-color:#d2dfe3;color:#31464e}
 @media(max-width:440px){.visual-hub{height:auto;min-height:0}.hub-grid{flex:none;display:flex;flex-direction:column}.activity-section{min-height:240px}.agents-section{display:flex;min-height:260px;border-left:0;border-top:1px solid #1b2930;padding:10px 0 0}.agent-grid{max-height:340px}}

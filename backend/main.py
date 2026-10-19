@@ -60,6 +60,12 @@ def agents():
 def activity(limit: int = 80, agent: str = ""):
     return store.get_activity(max(1, min(limit, 500)), agent or None)
 
+@app.get("/api/agents/{name}/runs", dependencies=[Depends(require_token)])
+def agent_runs(name: str, limit: int = 20):
+    if name not in registry.AGENTS:
+        raise HTTPException(status_code=404, detail="unknown agent")
+    return store.get_agent_runs(name, max(1, min(limit, 100)))
+
 @app.post("/api/agents/{name}/pause", dependencies=[Depends(require_token)])
 def pause_agent(name: str, body: PauseRequest):
     if name not in registry.AGENTS:
