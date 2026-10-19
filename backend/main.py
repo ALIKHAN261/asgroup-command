@@ -7,7 +7,7 @@ Docs: http://127.0.0.1:8000/docs  (interactive API)
 import pathlib, yaml
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 import secrets
 import agents as registry
@@ -48,6 +48,9 @@ class Command(BaseModel):
 class PauseRequest(BaseModel):
     paused: bool
 
+class NoteRequest(BaseModel):
+    content: str = Field(max_length=50000)
+
 @app.get("/api/health")
 def health():
     return {"ok": True, "agents": len(registry.AGENTS)}
@@ -59,6 +62,14 @@ def agents():
 @app.get("/api/activity", dependencies=[Depends(require_token)])
 def activity(limit: int = 80, agent: str = ""):
     return store.get_activity(max(1, min(limit, 500)), agent or None)
+
+@app.get("/api/notes", dependencies=[Depends(require_token)])
+def get_notes():
+    return store.get_workspace_note()
+
+@app.put("/api/notes", dependencies=[Depends(require_token)])
+def put_notes(body: NoteRequest):
+    return store.save_workspace_note(body.content)
 
 @app.get("/api/agents/{name}/runs", dependencies=[Depends(require_token)])
 def agent_runs(name: str, limit: int = 20):

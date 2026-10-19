@@ -27,6 +27,9 @@ def init(db_path):
             id INTEGER PRIMARY KEY AUTOINCREMENT, agent TEXT NOT NULL,
             started_at REAL NOT NULL, finished_at REAL, status TEXT NOT NULL,
             summary TEXT NOT NULL DEFAULT '');
+        CREATE TABLE IF NOT EXISTS workspace_notes(
+            note_id INTEGER PRIMARY KEY CHECK(note_id=1),
+            content TEXT NOT NULL DEFAULT '', updated_at REAL NOT NULL);
         """)
     # Migration: approvals.kind (default 'action'; 'control' for PC control)
     try:
@@ -100,6 +103,21 @@ def get_agent_runs(agent, limit=20):
             "SELECT id,agent,started_at,finished_at,status,summary "
             "FROM agent_runs WHERE agent=? ORDER BY id DESC LIMIT ?",
             (agent, limit))]
+
+def get_workspace_note():
+    with _lock:
+        row = _db.execute(
+            "SELECT content,updated_at FROM workspace_notes WHERE note_id=1").fetchone()
+        return dict(row) if row else {"content": "", "updated_at": None}
+
+def save_workspace_note(content):
+    now = time.time()
+    with _lock, _db:
+        _db.execute(
+            "INSERT INTO workspace_notes(note_id,content,updated_at) VALUES(1,?,?) "
+            "ON CONFLICT(note_id) DO UPDATE SET content=excluded.content,"
+            "updated_at=excluded.updated_at", (content, now))
+    return {"content": content, "updated_at": now}
 
 def get_activity(limit=80, agent=None):
     with _lock:

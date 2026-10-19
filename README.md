@@ -121,6 +121,14 @@ Progressive Web App from a supported mobile or desktop browser. It caches the
 static interface for offline loading; backend data and live screen access still
 require a connection to your PC.
 
+The backend stores agent state, activity, approvals, execution history, and
+workspace notes in SQLite (`backend/data/command.db`, configurable with
+`db_path`). Notes are shared across
+authenticated devices connected to the same backend; the browser keeps a local
+copy for offline editing, but changes sync only when the backend is reachable.
+The authenticated `GET /api/notes` and `PUT /api/notes` endpoints read and save
+the shared note (up to 50,000 characters).
+
 ## Add a new agent (one file, one job)
 
 `backend/agents/myjob.py`:
@@ -206,7 +214,8 @@ to prepare it immediately.
 
 The static dashboard groups the private screen preview and activity highlights
 on the left, system and agent status in the center, and Chats, Logs, Notes, and
-Tasks on the right. Notes stay in the current browser. Commands use the safe
+Tasks on the right. Notes sync through the backend SQLite database for devices
+using the same backend and API token. Commands use the safe
 `/api/command` endpoint; approvals remain manual. Click an agent card to view
 its recent activity and pause or resume it. Pause state is stored in SQLite;
 the scheduler skips paused agents, and a run already in progress may finish.

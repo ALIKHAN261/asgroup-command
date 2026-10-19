@@ -1,4 +1,4 @@
-const CACHE_NAME = "asg-command-v1";
+const CACHE_NAME = "asg-command-v2";
 const APP_FILES = [
   "./",
   "./index.html",

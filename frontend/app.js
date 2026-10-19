@@ -44,6 +44,51 @@ function setConn(ok, message) {
   $("connText").textContent = message;
 }
 
+async function loadSharedNotes() {
+  if (!store.token) {
+    $("notesStatus").textContent = "Local copy · add API token to sync";
+    return;
+  }
+  try {
+    const note = await api("/api/notes");
+    const localCopy = localStorage.getItem("asg_notes") || "";
+    if (note.updated_at) {
+      $("notesInput").value = note.content;
+      localStorage.setItem("asg_notes", note.content);
+      $("notesStatus").textContent = "Synced with backend database";
+    } else if (localCopy) {
+      $("notesInput").value = localCopy;
+      await api("/api/notes", { method: "PUT", body: JSON.stringify({ content: localCopy }) });
+      $("notesStatus").textContent = "Local notes copied to backend database";
+    } else {
+      $("notesInput").value = "";
+      $("notesStatus").textContent = "Ready to sync with backend database";
+    }
+  } catch (error) {
+    $("notesStatus").textContent = error.message.startsWith("Unauthorized")
+      ? "API token rejected · check settings"
+      : "Backend unavailable · local copy kept";
+  }
+}
+
+async function saveSharedNotes() {
+  const content = $("notesInput").value;
+  localStorage.setItem("asg_notes", content);
+  if (!store.token) {
+    $("notesStatus").textContent = "Saved locally · add API token to sync";
+    return;
+  }
+  $("notesStatus").textContent = "Saving to backend database…";
+  try {
+    await api("/api/notes", { method: "PUT", body: JSON.stringify({ content }) });
+    $("notesStatus").textContent = "Saved to backend database";
+  } catch (error) {
+    $("notesStatus").textContent = error.message.startsWith("Unauthorized")
+      ? "Saved locally · API token rejected"
+      : "Saved locally · backend sync failed";
+  }
+}
+
 function renderAgentCards() {
   const query = $("agentSearch").value.trim().toLocaleLowerCase();
   const status = $("agentStatusFilter").value;
@@ -406,10 +451,10 @@ $("saveSettings").addEventListener("click", () => {
   stopLiveScreen();
   tick();
   startLiveScreen();
+  loadSharedNotes();
 });
 $("saveNotes").addEventListener("click", () => {
-  localStorage.setItem("asg_notes", $("notesInput").value);
-  $("notesStatus").textContent = "Saved on this device";
+  saveSharedNotes();
 });
 $("notesInput").addEventListener("input", () => { $("notesStatus").textContent = "Unsaved changes"; });
 $("micBtn").addEventListener("click", () => {
@@ -427,6 +472,7 @@ $("micBtn").addEventListener("click", () => {
 $("baseUrl").value = store.baseUrl;
 $("apiToken").value = store.token;
 $("notesInput").value = localStorage.getItem("asg_notes") || "";
+loadSharedNotes();
 const updateClock = () => { $("systemClock").textContent = new Date().toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" }); };
 updateClock();
 window.setInterval(updateClock, 30000);

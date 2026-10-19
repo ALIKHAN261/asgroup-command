@@ -193,3 +193,19 @@ h2,h3,p{margin:0}
 :root[data-theme="light"] .detail-error{background:#fff1f1;border-color:#edc5c7;color:#a1333b}
 :root[data-theme="light"] .agent-tools input,:root[data-theme="light"] .agent-tools select{background:#fff;border-color:#d2dfe3;color:#31464e}
 @media(max-width:440px){.visual-hub{height:auto;min-height:0}.hub-grid{flex:none;display:flex;flex-direction:column}.activity-section{min-height:240px}.agents-section{display:flex;min-height:260px;border-left:0;border-top:1px solid #1b2930;padding:10px 0 0}.agent-grid{max-height:340px}}
+
+body{font-size:14px}
+.topbar-center{font-size:10px}.brand i{font-size:10px}.connection{font-size:12px}
+.eyebrow{font-size:10px}.section-heading h2,.hub-header h2,.view-heading h2,.drawer-title h2{font-size:16px}
+.privacy-chip{font-size:9px}.screen-state,.screen-toolbar,.microcopy{font-size:11px}
+.headline-title{font-size:11px}.headline-meta{font-size:10px}.headline p{font-size:11px}
+.subheading h3{font-size:12px}.subheading span,.activity-line,.agent-card-head,.chat-message p,.settings-drawer label{font-size:10px}
+.activity-line p,.agent-card p,.view-heading p,.chat-footer,.appr pre,.appr h3,.ctrlbox,.detail-summary,.run-line p{font-size:11px}
+.agent-card time,.right-footer,.notes-footer,.detail-activity-heading span,.run-meta{font-size:9px}
+.tab{font-size:9px}.empty-small{font-size:11px}.message-tag{font-size:8px}
+:root[data-theme="light"] .live-label,:root[data-theme="light"] .screen-toolbar,:root[data-theme="light"] .screen-state,:root[data-theme="light"] .empty-small{color:#526870}
+:root[data-theme="light"] .button-primary{background:linear-gradient(110deg,#e3efdf,#eaf3e8);border-color:#b9d2b3;color:#315823}
+:root[data-theme="light"] .composer button{background:#e4f0e2;border-color:#b9d2b3;color:#315823}
+:root[data-theme="light"] .brand-mark{color:#17656a}
+@media(max-width:720px){.section-heading h2,.hub-header h2{font-size:17px}.activity-line,.agent-card-head,.chat-message p{font-size:11px}.dashboard{min-height:0}}
+@media(max-width:440px){.brand{font-size:14px}.eyebrow{font-size:9px}.activity-line p,.agent-card p{font-size:10px}.agent-card time,.right-footer{font-size:9px}.agent-tools{grid-template-columns:minmax(0,1fr) 105px}.agent-tools input,.agent-tools select{font-size:10px}}

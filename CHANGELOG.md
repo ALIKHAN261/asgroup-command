@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Added authenticated SQLite-backed workspace notes with local offline fallback and cross-device sync through the same backend.
+- Added landing-page dark/light theme sharing, larger dashboard typography, and responsive layouts for narrow screens.
 - Added per-agent execution history with duration, status, and summary in SQLite and the dashboard.
 - Added `expense_track` to compare local expense logs with recorded income.
 - Added agent search and status filters, including the compact phone layout.
