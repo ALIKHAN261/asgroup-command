@@ -3,8 +3,6 @@
 ## Unreleased
 - Added `expense_track` to compare local expense logs with recorded income.
 - Added agent search and status filters, including the compact phone layout.
-- Added `expense_track` for daily and monthly expense totals with estimated net income.
-- Added agent roster search and status filters.
 - Deduplicated identical pending approvals from the same agent to keep repeat runs from flooding the review queue.
 - Added `content_studio` to prepare reviewable briefs from local topic lists.
 - Added `invoice_watch` to draft overdue invoice follow-ups from a local CSV.
