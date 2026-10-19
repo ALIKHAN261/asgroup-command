@@ -8,7 +8,8 @@ const applyTheme = (theme) => {
   document.querySelector('meta[name="theme-color"]').content = light ? "#edf3f5" : "#070b10";
 };
 const savedTheme = localStorage.getItem("asg_theme");
-applyTheme(savedTheme === "light" ? "light" : "dark");
+const initialTheme = savedTheme || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+applyTheme(initialTheme);
 const store = {
   get baseUrl() { return localStorage.getItem("asg_base") || "http://127.0.0.1:8000"; },
   get token() { return localStorage.getItem("asg_token") || ""; },
@@ -79,6 +80,8 @@ function updateAgentDetail(agent) {
   $("agentDetailDot").className = "dot " + agent.status;
   $("agentDetailLastRun").textContent = `Last run ${dateTime(agent.last_run)}`;
   $("agentDetailSummary").textContent = agent.last_summary || "No status reported.";
+  $("agentRunBtn").disabled = agent.status === "paused";
+  $("agentRunBtn").title = agent.status === "paused" ? "Resume this agent before requesting a run" : "Request an immediate run";
   $("agentPauseBtn").textContent = agent.status === "paused" ? "Resume agent" : "Pause agent";
   $("agentPauseBtn").dataset.paused = String(agent.status === "paused");
 }
@@ -134,6 +137,28 @@ async function toggleAgentPause() {
     showAgentDetailError(error.message);
   } finally {
     button.disabled = false;
+  }
+}
+
+async function runAgentNow() {
+  if (!selectedAgent) return;
+  const button = $("agentRunBtn");
+  const previousText = button.textContent;
+  button.disabled = true;
+  button.textContent = "Requesting…";
+  $("agentDetailError").classList.add("hidden");
+  try {
+    await api(`/api/agents/${encodeURIComponent(selectedAgent.name)}/run`, { method: "POST" });
+    button.textContent = "Run queued";
+    await tick();
+  } catch (error) {
+    showAgentDetailError(error.message);
+    button.textContent = previousText;
+  } finally {
+    window.setTimeout(() => {
+      if (button.isConnected && button.textContent === "Run queued") button.textContent = "Run now";
+      button.disabled = !selectedAgent || selectedAgent.status === "paused";
+    }, 1800);
   }
 }
 
@@ -319,6 +344,7 @@ $("agentModal").addEventListener("click", (event) => {
   if (event.target === $("agentModal")) closeAgentDetail();
 });
 $("agentPauseBtn").addEventListener("click", toggleAgentPause);
+$("agentRunBtn").addEventListener("click", runAgentNow);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !$("agentModal").classList.contains("hidden")) closeAgentDetail();
 });

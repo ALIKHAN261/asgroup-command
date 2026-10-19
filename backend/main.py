@@ -68,6 +68,15 @@ def pause_agent(name: str, body: PauseRequest):
     return {"ok": True, "name": name,
             "status": "paused" if body.paused else "idle"}
 
+@app.post("/api/agents/{name}/run", dependencies=[Depends(require_token)])
+def run_agent(name: str):
+    if name not in registry.AGENTS:
+        raise HTTPException(status_code=404, detail="unknown agent")
+    if store.is_agent_paused(name):
+        raise HTTPException(status_code=409, detail="agent is paused")
+    store.request_run(name)
+    return {"ok": True, "name": name, "status": "run_requested"}
+
 @app.get("/api/approvals", dependencies=[Depends(require_token)])
 def approvals(status: str = "pending"):
     return store.get_approvals(status if status in ("pending", "approved", "rejected") else "pending")

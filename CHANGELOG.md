@@ -1,6 +1,10 @@
 # Changelog
 
 ## Unreleased
+- Added `content_studio` to prepare reviewable briefs from local topic lists.
+- Added `invoice_watch` to draft overdue invoice follow-ups from a local CSV.
+- Added authenticated `POST /api/agents/{name}/run` and an agent-detail Run now button.
+- Improved light-theme contrast across chat, logs, approvals, and agent details.
 - Added a persistent dark/light theme toggle to the dashboard.
 - Added a PWA manifest, app icon, and service-worker caching for offline shell loading.
 - Added agent detail views with recent activity and pause/resume controls;

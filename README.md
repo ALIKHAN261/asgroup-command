@@ -29,6 +29,8 @@ Your PC (backend)                    Vercel (frontend)
 | `briefer` | daily at 08:00 | Queues approvals count, agent errors, cash total, and YouTube highlights for review |
 | `gig_watch` | 10 min | Drafts replies from pasted Fiverr messages; does not connect to Fiverr |
 | `reporter` | weekly | Writes agent activity, approval outcomes, and income totals to a report for review |
+| `content_studio` | 12 hr | Turns manually entered topics into outline and caption drafts for review; never publishes |
+| `invoice_watch` | 6 hr | Finds overdue unpaid invoices in a local CSV and drafts polite follow-ups; never sends |
 | `sys_watch` | 10 min | Disk space + load; queues approval if disk < 10% free |
 | `screen_eye` | 10 min | Snapshot history of your screen (the dashboard shows it **live**) |
 
@@ -159,6 +161,21 @@ suggestion for each new message. It cannot log in to or monitor the Fiverr
 inbox; you must paste new messages yourself. Previously processed messages are
 tracked in `backend/data/gig_watch_seen.json` to avoid repeat drafts.
 
+## Content briefs
+
+Add one topic per line to `backend/data/content-ideas.txt`. `content_studio`
+prepares a hook, outline, caption starter, and call to action for each new idea
+and queues it for review. It only uses your local list and never records or
+publishes content. Processed ideas are tracked locally to avoid duplicate drafts.
+
+## Invoice follow-up drafts
+
+Add invoices to `backend/data/invoices.csv` with the columns
+`invoice_id,client,amount,due_date,status` and ISO dates such as `2026-10-19`.
+`invoice_watch` queues one polite follow-up draft for each overdue invoice that
+is not marked `paid`, `void`, or `cancelled`. It does not connect to email,
+send messages, or collect payment. Mark invoices paid in the CSV to clear them.
+
 ## Screen privacy
 
 Screen captures and live streaming (`/api/screen`, `/api/shots/*`, and
@@ -183,6 +200,8 @@ Tasks on the right. Notes stay in the current browser. Commands use the safe
 `/api/command` endpoint; approvals remain manual. Click an agent card to view
 its recent activity and pause or resume it. Pause state is stored in SQLite;
 the scheduler skips paused agents, and a run already in progress may finish.
+Use the agent detail view's **Run now** button to request an immediate run;
+paused agents must be resumed before they can run.
 
 The authenticated `POST /api/agents/{name}/pause` endpoint accepts
 `{"paused":true}` to pause and `{"paused":false}` to resume. Agent activity

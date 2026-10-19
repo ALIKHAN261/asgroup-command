@@ -130,7 +130,7 @@ h2,h3,p{margin:0}
 .detail-activity .activity-line{grid-template-columns:78px minmax(0,1fr)}
 .pause-note{font-size:8px;color:#73838b;line-height:1.5;margin:10px 0}
 .detail-error{padding:8px;margin-bottom:8px;border:1px solid #683940;border-radius:7px;background:#211216;color:#f0a1a4;font-size:9px}
-.pause-action{align-self:flex-end;min-width:125px}
+.agent-actions{display:flex;align-self:flex-end;gap:8px;margin-top:2px}.agent-actions button{min-width:105px}
 .settings-drawer{position:fixed;right:14px;top:63px;width:min(380px,calc(100vw - 28px));padding:16px;border:1px solid #2b4249;border-radius:14px;background:#0d151b;box-shadow:0 22px 70px #000b;z-index:20}
 .drawer-title{margin-bottom:13px}.drawer-title h2{font-size:16px}.drawer-title .icon-button{font-size:20px}
 .settings-drawer label{display:block;color:#99aab1;font-size:10px;margin:10px 0}.settings-drawer input{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid #263840;border-radius:8px;background:#080d12;color:#e4ecee;outline:none}.settings-drawer input:focus{border-color:#478084}.settings-drawer .button-primary{margin-top:3px}.hint{color:#72818a;font-size:9px;line-height:1.5;margin-top:12px}.settings-drawer label+label{margin-top:12px}
@@ -161,3 +161,21 @@ h2,h3,p{margin:0}
 :root[data-theme="light"] .agent-modal{background:#24343b66}
 :root[data-theme="light"] .privacy-chip{background:#e8f5f5;color:#286d72;border-color:#c6e0e2}
 :root[data-theme="light"] .button-secondary{background:#f5f9fa;border-color:#cfdee2;color:#34535b}
+:root[data-theme="light"] .tabbar,:root[data-theme="light"] .composer,:root[data-theme="light"] .detail-summary,:root[data-theme="light"] .notes-view textarea{background:#f5f9fa;border-color:#d5e0e4}
+:root[data-theme="light"] .chat-message{background:#fff;border-color:#d7e2e5}
+:root[data-theme="light"] .chat-message.user{background:#e7f4f4;border-color:#c5e0e2}
+:root[data-theme="light"] .chat-message p,:root[data-theme="light"] .chat-message .message-time,:root[data-theme="light"] .log-row p,:root[data-theme="light"] .log-row time,:root[data-theme="light"] .log-row b,:root[data-theme="light"] .detail-summary,:root[data-theme="light"] .detail-status{color:#435961}
+:root[data-theme="light"] .tab.active{color:#1b353c}
+:root[data-theme="light"] .tab-count{background:#dceff0;color:#17656a}
+:root[data-theme="light"] .agent-card p,:root[data-theme="light"] .agent-card time{color:#61757d}
+:root[data-theme="light"] .agent-card.error{background:#fff1f1;border-color:#edc5c7}
+:root[data-theme="light"] .appr{background:#fff;border-color:#d9d8c7}
+:root[data-theme="light"] .appr h3{color:#24383f}
+:root[data-theme="light"] .appr pre{background:#f5f8f9;border-color:#dce5e8;color:#455960}
+:root[data-theme="light"] .appr .yes{background:#e5f5ed;border-color:#b7ddc9;color:#216d49}
+:root[data-theme="light"] .appr .no{background:#fff0f0;border-color:#ecc6c8;color:#a1333b}
+:root[data-theme="light"] .ctrlbox{background:#f5f9fa;border-color:#d5e0e4;color:#435961}
+:root[data-theme="light"] .detail-summary{background:#f5f9fa}
+:root[data-theme="light"] .detail-status #agentDetailLastRun,:root[data-theme="light"] .detail-activity-heading span{color:#60747c}
+:root[data-theme="light"] .detail-activity{scrollbar-color:#bdcbd0 transparent}
+:root[data-theme="light"] .detail-error{background:#fff1f1;border-color:#edc5c7;color:#a1333b}
