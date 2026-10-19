@@ -44,24 +44,33 @@ function setConn(ok, message) {
   $("connText").textContent = message;
 }
 
+function renderAgentCards() {
+  const query = $("agentSearch").value.trim().toLocaleLowerCase();
+  const status = $("agentStatusFilter").value;
+  const visible = currentAgents.filter((agent) =>
+    (status === "all" || agent.status === status) &&
+    (!query || `${agent.name} ${agent.last_summary || ""}`.toLocaleLowerCase().includes(query)));
+  $("agentGridCount").textContent = `${visible.length} of ${currentAgents.length} shown`;
+  $("agents").innerHTML = visible.length ? visible.map((agent) => `
+    <article class="agent-card ${agent.status === "error" ? "error" : ""}" data-agent="${esc(agent.name)}" tabindex="0" role="button" aria-label="Open ${esc(agent.name)} details">
+      <div class="agent-card-head"><span class="dot ${esc(agent.status)}"></span><span>${esc(agent.name)}</span></div>
+      <p>${esc(agent.last_summary || "No status reported")}</p>
+      <time>Last run ${dateTime(agent.last_run)}</time>
+    </article>`).join("") : `<div class="empty-small">No agents match these filters.</div>`;
+}
+
 function renderAgents(agents) {
   currentAgents = agents;
   const working = agents.filter((agent) => agent.status === "working").length;
   const errors = agents.filter((agent) => agent.status === "error").length;
   $("agentCount").textContent = String(agents.length);
-  $("agentGridCount").textContent = `${agents.length} registered`;
   $("workingCount").textContent = String(working);
   $("errorCount").textContent = String(errors);
   $("coreStatus").textContent = errors ? "ATTENTION REQUIRED" : working ? "SYSTEM ACTIVE" : "SYSTEM STANDBY";
   $("coreHeadline").textContent = errors ? `${errors} agent${errors === 1 ? "" : "s"} need review` : "Command workspace";
   $("agentNodes").innerHTML = agents.slice(0, 4).map((agent) => `
     <div class="agent-node"><span class="dot ${esc(agent.status)}"></span><span>${esc(agent.name)}</span></div>`).join("");
-  $("agents").innerHTML = agents.length ? agents.map((agent) => `
-    <article class="agent-card ${agent.status === "error" ? "error" : ""}" data-agent="${esc(agent.name)}" tabindex="0" role="button" aria-label="Open ${esc(agent.name)} details">
-      <div class="agent-card-head"><span class="dot ${esc(agent.status)}"></span><span>${esc(agent.name)}</span></div>
-      <p>${esc(agent.last_summary || "No status reported")}</p>
-      <time>Last run ${dateTime(agent.last_run)}</time>
-    </article>`).join("") : `<div class="empty-small">No agents registered.</div>`;
+  renderAgentCards();
   if (selectedAgent) {
     selectedAgent = agents.find((agent) => agent.name === selectedAgent.name) || selectedAgent;
     updateAgentDetail(selectedAgent);
@@ -345,6 +354,8 @@ $("agentModal").addEventListener("click", (event) => {
 });
 $("agentPauseBtn").addEventListener("click", toggleAgentPause);
 $("agentRunBtn").addEventListener("click", runAgentNow);
+$("agentSearch").addEventListener("input", renderAgentCards);
+$("agentStatusFilter").addEventListener("change", renderAgentCards);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !$("agentModal").classList.contains("hidden")) closeAgentDetail();
 });

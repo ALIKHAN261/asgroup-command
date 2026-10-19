@@ -26,6 +26,7 @@ Your PC (backend)                    Vercel (frontend)
 | `tube_manager` | 6 hr | Checks YouTube channel uploads and flags channels inactive for 14 days |
 | `scout` | 1 hr | Drafts one client-outreach message per run (never sends) → approval queue |
 | `cash_track` | 1 hr | Summarizes income from `data/income.json` (today / month / top sources) |
+| `expense_track` | 1 hr | Reports daily/monthly expenses and estimated net from local CSV/JSON files |
 | `briefer` | daily at 08:00 | Queues approvals count, agent errors, cash total, and YouTube highlights for review |
 | `gig_watch` | 10 min | Drafts replies from pasted Fiverr messages; does not connect to Fiverr |
 | `reporter` | weekly | Writes agent activity, approval outcomes, and income totals to a report for review |
@@ -161,6 +162,15 @@ suggestion for each new message. It cannot log in to or monitor the Fiverr
 inbox; you must paste new messages yourself. Previously processed messages are
 tracked in `backend/data/gig_watch_seen.json` to avoid repeat drafts.
 
+## Expense tracking
+
+Add one expense per row to `backend/data/expenses.csv` with columns
+`date,amount,category,description`, using ISO dates and nonnegative amounts.
+`expense_track` compares today's and this month's expenses with the current
+month's total in `backend/data/income.json` and reports an estimated net. It
+does not connect to banks or move money; malformed expense rows are skipped
+and noted in the activity feed.
+
 ## Content briefs
 
 Add one topic per line to `backend/data/content-ideas.txt`. `content_studio`
@@ -202,6 +212,8 @@ its recent activity and pause or resume it. Pause state is stored in SQLite;
 the scheduler skips paused agents, and a run already in progress may finish.
 Use the agent detail view's **Run now** button to request an immediate run;
 paused agents must be resumed before they can run.
+Use the agent search and status filter to narrow the roster without changing
+the underlying agent state.
 If an agent repeats the same approval while it is still pending, the existing
 item is reused instead of adding a duplicate. Once you decide it, later runs
 may queue a fresh item.
