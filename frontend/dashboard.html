@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#070b10">
+<title>AS GROUP Command — Operations Deck</title>
+<link rel="stylesheet" href="dash.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">AS</span><span>AS GROUP</span><i>COMMAND DECK</i></div>
+  <div class="topbar-center"><span class="live-dot"></span><span>OPERATIONS WORKSPACE</span><span class="top-divider"></span><span id="systemClock">--:--</span></div>
+  <div class="topbar-actions">
+    <span class="connection"><span id="connDot" class="dot idle"></span><span id="connText">Connecting</span></span>
+    <button id="micBtn" class="icon-button" title="Voice command" aria-label="Voice command">◉</button>
+    <button id="settingsBtn" class="icon-button" title="Backend connection" aria-label="Backend connection">⚙</button>
+  </div>
+</header>
+
+<div id="settings" class="settings-drawer hidden">
+  <div class="drawer-title"><div><span class="eyebrow">CONNECTION</span><h2>Backend settings</h2></div><button id="closeSettings" class="icon-button" aria-label="Close settings">×</button></div>
+  <label>Backend URL <input id="baseUrl" placeholder="http://127.0.0.1:8000"></label>
+  <label>API token <input id="apiToken" type="password" placeholder="from config.yaml"></label>
+  <button id="saveSettings" class="button-primary">Connect</button>
+  <p class="hint">Screen previews only work from the backend PC itself. Other dashboard data can connect over your private network.</p>
+</div>
+
+<main class="dashboard">
+  <aside class="left-column">
+    <section class="panel screen-panel">
+      <div class="section-heading"><div><span class="eyebrow">◉ MEDIA LINK</span><h2>Local screen</h2></div><span class="privacy-chip">THIS DEVICE</span></div>
+      <div class="screen-preview"><img id="screenLive" alt="Live screen from this backend device"><div id="screenState" class="screen-state">Waiting for local screen feed</div></div>
+      <div class="screen-toolbar"><span id="screenFeedState"><i class="tiny-dot"></i> Feed disconnected</span><button id="screenBtn" class="text-button">Connect feed</button></div>
+      <p class="microcopy">Private to this PC. Other computers are blocked.</p>
+    </section>
+
+    <section class="panel headlines-panel">
+      <div class="section-heading"><div><span class="eyebrow">▏ TODAY HEADLINES</span><h2>Activity highlights</h2></div><button id="refreshBtn" class="icon-button small" title="Refresh workspace" aria-label="Refresh workspace">↻</button></div>
+      <div id="headlines" class="headlines-list"><div class="empty-small">Waiting for activity…</div></div>
+    </section>
+
+    <section class="privacy-note">
+      <span class="privacy-icon">⌁</span><span><b>Private workspace</b><small>Approvals always need your decision.</small></span>
+    </section>
+  </aside>
+
+  <section class="center-column">
+    <section class="panel core-panel">
+      <div id="agentNodes" class="agent-nodes" aria-label="Agent status nodes"></div>
+      <div class="core-visual">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="core-sphere"><div class="sphere-glow"></div><div class="sphere-points"></div><span>ASG</span></div>
+        <div class="core-caption"><span id="coreStatus" class="eyebrow">SYSTEM STANDBY</span><strong id="coreHeadline">Command workspace</strong></div>
+      </div>
+      <div class="core-side">
+        <span class="eyebrow">TEAM STATUS</span>
+        <div class="core-count"><strong id="agentCount">0</strong><span>agents online</span></div>
+        <div class="core-metrics"><span><i class="metric-dot active"></i><b id="workingCount">0</b> working</span><span><i class="metric-dot danger"></i><b id="errorCount">0</b> errors</span></div>
+        <button id="syncBtn" class="button-primary">↻ &nbsp; Sync workspace</button>
+      </div>
+    </section>
+
+    <section class="panel visual-hub">
+      <div class="hub-header"><div><span class="eyebrow">▧ VISUAL HUB</span><h2>Team activity</h2></div><span class="live-label"><i class="tiny-dot"></i> LIVE</span></div>
+      <div class="hub-grid">
+        <section class="activity-section"><div class="subheading"><h3>Recent operations</h3><span>Latest first</span></div><div id="activity" class="activity-feed"><div class="empty-small">No activity yet.</div></div></section>
+        <section class="agents-section"><div class="subheading"><h3>Sub agents</h3><span id="agentGridCount">0 registered</span></div><div id="agents" class="agent-grid"><div class="empty-small">Waiting for agents…</div></div></section>
+      </div>
+    </section>
+  </section>
+
+  <aside class="right-column">
+    <section class="panel command-panel">
+      <nav class="tabbar" aria-label="Workspace panels">
+        <button class="tab active" data-tab="chats" aria-selected="true">CHATS</button>
+        <button class="tab" data-tab="logs" aria-selected="false">LOGS</button>
+        <button class="tab" data-tab="notes" aria-selected="false">NOTES</button>
+        <button class="tab" data-tab="tasks" aria-selected="false">TASKS <span id="taskBadge" class="tab-count">0</span></button>
+      </nav>
+
+      <section id="view-chats" class="tab-view chat-view">
+        <div id="chatMessages" class="chat-messages"><div class="chat-message assistant"><span class="message-tag">AS GROUP COMMAND</span><p>Workspace connected when the status indicator turns green. Ask for status or request an agent run.</p></div></div>
+        <form id="commandForm" class="composer"><input id="commandInput" autocomplete="off" placeholder="Type an instruction…" aria-label="Command"><button type="submit" aria-label="Send command">↑</button></form>
+        <div class="chat-footer"><span>Commands are limited to safe actions.</span><label><input type="checkbox" id="ttsToggle"> Voice replies</label></div>
+      </section>
+
+      <section id="view-logs" class="tab-view logs-view hidden"><div class="view-heading"><span class="eyebrow">SYSTEM LOG</span><h2>Recent events</h2></div><div id="logs" class="logs-feed"><div class="empty-small">No log entries.</div></div></section>
+
+      <section id="view-notes" class="tab-view notes-view hidden"><div class="view-heading"><span class="eyebrow">PERSONAL SPACE</span><h2>Local notes</h2><p>Notes stay in this browser and are not sent to the backend.</p></div><textarea id="notesInput" placeholder="Keep a private note…"></textarea><div class="notes-footer"><span id="notesStatus">Saved on this device</span><button id="saveNotes" class="button-secondary">Save notes</button></div></section>
+
+      <section id="view-tasks" class="tab-view tasks-view hidden"><div class="view-heading"><span class="eyebrow">REVIEW REQUIRED</span><h2>Approval queue</h2><p>Nothing here runs until you approve it.</p></div><div id="approvals"><div class="empty-small">Loading approvals…</div></div></section>
+    </section>
+    <div class="right-footer"><span>AS GROUP</span><span>HUMAN REVIEW ENABLED</span></div>
+  </aside>
+</main>
+
+<div id="agentModal" class="agent-modal hidden" aria-hidden="true">
+  <section class="agent-dialog" role="dialog" aria-modal="true" aria-labelledby="agentDetailName">
+    <div class="detail-header"><div><span class="eyebrow">AGENT DETAILS</span><h2 id="agentDetailName">Agent</h2></div><button id="closeAgentDetail" class="icon-button" aria-label="Close agent details">×</button></div>
+    <div class="detail-status"><span id="agentDetailDot" class="dot idle"></span><span id="agentDetailStatus">idle</span><span id="agentDetailLastRun"></span></div>
+    <p id="agentDetailSummary" class="detail-summary"></p>
+    <div class="detail-activity-heading"><h3>Recent activity</h3><span>Latest first</span></div>
+    <div id="agentDetailActivity" class="detail-activity"><div class="empty-small">Loading activity…</div></div>
+    <p class="pause-note">Pausing prevents future runs. A run already in progress may finish.</p>
+    <div id="agentDetailError" class="detail-error hidden"></div>
+    <button id="agentPauseBtn" class="button-primary pause-action">Pause agent</button>
+  </section>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

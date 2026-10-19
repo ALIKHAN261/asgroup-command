@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.venv/
+backend/.venv/
+backend/config.yaml
+backend/data/
+.vercel/

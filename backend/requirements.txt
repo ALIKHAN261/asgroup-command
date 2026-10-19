@@ -1,0 +1,5 @@
+fastapi>=0.110
+uvicorn>=0.29
+pyyaml>=6.0
+pillow>=10.0
+pyautogui>=0.9.54  # Windows only: mouse/keyboard control (optional)

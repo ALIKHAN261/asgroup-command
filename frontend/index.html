@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AS GROUP Command — Your AI agent team</title>
+<meta name="description" content="A team of AI agents that works on your PC while you're away. One agent, one job. Voice control, live screen, one-tap approvals.">
+<link rel="stylesheet" href="site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav>
+  <div class="brand"><span class="logo">AS</span> GROUP <em>Command</em></div>
+  <div class="links">
+    <a href="#features">Features</a><a href="#agents">Agents</a>
+    <a href="#safety">Safety</a><a href="#faq">FAQ</a>
+  </div>
+  <a class="btn small" href="dashboard.html">Open workspace →</a>
+  <button class="burger" id="burger" aria-label="menu">☰</button>
+</nav>
+<div class="mobilemenu hidden" id="mobilemenu">
+  <a href="#features">Features</a><a href="#agents">Agents</a>
+  <a href="#safety">Safety</a><a href="#faq">FAQ</a>
+  <a href="dashboard.html">Open workspace →</a>
+</div>
+
+<header class="hero">
+  <div class="glow"></div>
+  <p class="kicker">AS GROUP · AI AGENT TEAM</p>
+  <h1>Your agents work<br>while <span>you're away.</span></h1>
+  <p class="sub">A team of AI agents living on your PC — monitoring, drafting, watching, reporting. One agent, one job. You review everything with one tap a day.</p>
+  <div class="cta">
+    <a class="btn" href="#download">Get the starter kit</a>
+    <a class="btn ghost" href="dashboard.html">Open live workspace →</a>
+  </div>
+  <div class="terminal">
+    <div class="tbar"><span></span><span></span><span></span><span class="ttitle">command — live</span></div>
+    <pre id="term"><span class="g">✓</span> tube_watch   <span class="mut">idle</span>    all 5 sites up
+<span class="g">✓</span> scout        <span class="mut">idle</span>    drafted outreach — waiting your approval
+<span class="g">✓</span> screen_eye   <span class="grn">● working</span> capturing your screen…
+<span class="g">✓</span> cash_track   <span class="mut">idle</span>    today 150 · 2026-10 1,240
+<span class="amb">◷</span> approval     <span class="mut">queue</span>   <span class="amb">2 waiting for your tap</span></pre>
+  </div>
+</header>
+
+<section class="stats">
+  <div><b data-count="5">0</b><span>starter agents</span></div>
+  <div><b>24/7</b><span>always working</span></div>
+  <div><b data-count="1">0</b><span>tap approval a day</span></div>
+  <div><b>∞</b><span>agents you can add</span></div>
+</section>
+
+<section id="features">
+  <h2>One team. Every job covered.</h2>
+  <p class="secsub">Not one chatbot that does everything badly — specialists that each do one job well.</p>
+  <div class="grid">
+    <div class="card"><div class="ico">🤖</div><h3>One agent, one job</h3><p>Each agent is a single file with a single responsibility. Adding a new team member is one Python file — no rewiring.</p></div>
+    <div class="card"><div class="ico">📡</div><h3>Live workspace</h3><p>Every agent has a live card: <span class="grn">working</span>, idle, or error. Watch the whole team from your phone, in real time.</p></div>
+    <div class="card"><div class="ico">🎙</div><h3>Voice assistant</h3><p>Tap the mic and talk: "how are my agents?", "what's pending?", "take a screenshot". It speaks the answer back.</p></div>
+    <div class="card"><div class="ico">👁</div><h3>Live screen</h3><p>Your PC's screen streams live into the dashboard — real-time video, from any device. No more 10-minute-old screenshots.</p></div>
+    <div class="card"><div class="ico">🖱</div><h3>Admin PC control</h3><p>You granted admin access: agents propose mouse & keyboard actions with a screenshot — you tap "Approve & run".</p></div>
+    <div class="card"><div class="ico">✅</div><h3>Once-a-day approvals</h3><p>Everything consequential queues up. One briefing a day, one tap each. Agents can never approve their own work.</p></div>
+    <div class="card"><div class="ico">📱</div><h3>Multi-device</h3><p>Dashboard on Vercel, backend on your PC. Phone, laptop, anywhere — via your private Tailscale network.</p></div>
+    <div class="card"><div class="ico">🔐</div><h3>Token-secured</h3><p>Every API call carries your secret token. Your PC, your data, your eyes only.</p></div>
+  </div>
+</section>
+
+<section id="how">
+  <h2>Running in 3 steps.</h2>
+  <div class="steps">
+    <div class="step"><b>1</b><h3>Start the backend</h3><p>Double-click <code>start.bat</code> on your PC. It installs everything and generates your API token.</p></div>
+    <div class="step"><b>2</b><h3>Agents go to work</h3><p>They monitor, draft, capture, and report — around the clock, on their own schedules.</p></div>
+    <div class="step"><b>3</b><h3>You tap once a day</h3><p>Open the workspace, clear the approval queue, done. Talk to them by voice anytime.</p></div>
+  </div>
+</section>
+
+<section id="agents">
+  <h2>Meet the starting team.</h2>
+  <p class="secsub">Five specialists ship in the box. Your next hire is one file away.</p>
+  <div class="grid">
+    <div class="card"><div class="ico">📺</div><h3>tube_watch</h3><p>Watches your websites every 5 minutes. If one goes down, it queues an alert for your review.</p></div>
+    <div class="card"><div class="ico">🔭</div><h3>scout</h3><p>Client hunting: drafts one personalized outreach message per hour. It never sends — you approve.</p></div>
+    <div class="card"><div class="ico">💰</div><h3>cash_track</h3><p>Reads your income log and reports today, this month, and your top sources. Your money, summarized.</p></div>
+    <div class="card"><div class="ico">🖥</div><h3>sys_watch</h3><p>Keeps an eye on disk space and load. Warns you before a full disk ruins your day.</p></div>
+    <div class="card"><div class="ico">👁</div><h3>screen_eye</h3><p>Streams your screen <b>live</b> into the dashboard and keeps snapshot history. Your PC, visible anywhere, in real time.</p></div>
+    <div class="card new"><div class="ico">➕</div><h3>Your agent here</h3><p class="mono">agents/myjob.py</p><p>One file, one decorator, one job. If you can describe the job, you can add the agent.</p></div>
+  </div>
+</section>
+
+<section id="safety">
+  <h2>Admin power, with guardrails.</h2>
+  <p class="secsub">You gave the team admin access to your PC. Here's what keeps it safe:</p>
+  <div class="grid">
+    <div class="card"><div class="ico">🖱</div><h3>Propose → tap → execute</h3><p>Agents can't click anything on their own. Every mouse/keyboard action arrives as a proposal with a screenshot — it runs only on your tap.</p></div>
+    <div class="card"><div class="ico">🚫</div><h3>Hard blocks</h3><p>Passwords, OTPs, 2FA, CAPTCHAs, logins — agents can never drive these. Ever. Even if allowlisted.</p></div>
+    <div class="card"><div class="ico">🗣</div><h3>Voice can't approve</h3><p>The voice assistant talks and informs, but a spoken "yes" never counts. Approvals need your tap in the dashboard.</p></div>
+    <div class="card"><div class="ico">🛑</div><h3>Panic corner</h3><p>Slam the mouse into any screen corner and any control action aborts instantly. One crashing agent never stops the others.</p></div>
+  </div>
+</section>
+
+<section id="faq">
+  <h2>Questions.</h2>
+  <div class="faq">
+    <details><summary>Does it work from my phone?</summary><p>Yes. The dashboard is a website — open it on your phone, enter your backend address and token once. From anywhere, use Tailscale (free) to reach your PC privately.</p></details>
+    <details><summary>Windows only?</summary><p>The backend (where agents live) runs on Windows — that's where your work is. The dashboard works on any device with a browser.</p></details>
+    <details><summary>Can the agents really control my PC?</summary><p>Yes — with your explicit grant. They propose each action with a screenshot; you tap "Approve & run". You can also allowlist safe actions (like screenshots) to run without asking.</p></details>
+    <details><summary>What can't it do?</summary><p>Agents never send messages, post, publish, or spend on their own. They never touch logins, OTPs, or CAPTCHAs. Voice informs but never approves.</p></details>
+    <details><summary>Is it free?</summary><p>Yes — it's your software on your PC. No subscriptions, no cloud fees. The dashboard hosting is on Vercel's free tier.</p></details>
+  </div>
+</section>
+
+<section id="download" class="cta2">
+  <h2>Put your team to work.</h2>
+  <p class="secsub">Free starter kit: backend, 5 agents, voice, screen, control — and the VS Code prompts to grow the team.</p>
+  <a class="btn big" href="https://muse.ai/files/1357005217494019/990604426631243/2vliom17kjibmdvypqzsr7bu/asgroup-command-starter.zip">Download the starter kit ⬇</a>
+  <p class="fine">v1.2.0 · Windows backend · any-device dashboard · link expires Oct 20</p>
+</section>
+
+<footer>
+  <div class="brand"><span class="logo">AS</span> GROUP <em>Command</em></div>
+  <p>Your agents. Your PC. Your rules.</p>
+</footer>
+<script src="site.js"></script>
+</body>
+</html>
